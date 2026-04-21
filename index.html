@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Latest Power Frame By: EAM96</title>
+  <title>New Power xatFrame</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @keyframes pulse-slow {
@@ -81,6 +81,13 @@
         background: rgba(59, 130, 246, 0.5); 
         border-radius: 10px;
     }
+
+    /* Evitar la selección de texto en todo el documento */
+    * {
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+    }
   </style>
 </head>
 <body class="bg-transparent text-slate-200 h-screen w-screen overflow-hidden font-sans antialiased selection:bg-blue-500/30 select-none flex justify-center m-0 p-0">
@@ -118,7 +125,7 @@
             <!-- Botón Ocultar/Mostrar UI -->
             <button onclick="window.toggleUI()" id="top-btn-toggle" class="px-3 py-1.5 ml-2 bg-slate-800 border border-slate-700 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition-all shadow-sm flex items-center gap-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                <span data-i18n="hide_ui">Ocultar UI</span>
+                <span data-i18n="hide_ui">Ocultar</span>
             </button>
 
             <!-- Botón Cambio Idioma -->
@@ -278,8 +285,8 @@
         es: {
             smilies: "Smilies",
             pawns: "Pawns",
-            hide_ui: "Ocultar UI",
-            show_ui: "Mostrar UI",
+            hide_ui: "Ocultar",
+            show_ui: "Mostrar ",
             results: "Resultados:",
             search_placeholder: "Buscar códigos...",
             search_copied: "¡Código copiado con éxito!",
@@ -310,8 +317,8 @@
         en: {
             smilies: "Smilies",
             pawns: "Pawns",
-            hide_ui: "Hide UI",
-            show_ui: "Show UI",
+            hide_ui: "Hide",
+            show_ui: "Show",
             results: "Results:",
             search_placeholder: "Search codes...",
             search_copied: "Code copied successfully!",
@@ -774,6 +781,82 @@
     }
 
     cargarDatos();
+
+    // --- PROTECCIÓN GLOBAL DE COPIA Y ANTI-DEVTOOLS ---
+    
+    // Deshabilitar el clic derecho en toda la página
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Prevenir copiado manual desde teclado, aunque permitiendo el programático si hay selección interna
+    document.addEventListener('copy', function(e) {
+        if (e.target.tagName === 'TEXTAREA') return; 
+        
+        const selection = window.getSelection();
+        let isCopyable = false;
+        
+        if (selection.rangeCount > 0) {
+            const node = selection.focusNode;
+            if (node && node.parentElement && node.parentElement.classList.contains('copyable-code')) {
+                isCopyable = true;
+            }
+        }
+        
+        if (!isCopyable) {
+            e.preventDefault();
+        }
+    });
+
+    // Bloquear atajos de teclado para herramientas de desarrollo
+    document.addEventListener('keydown', function(e) {
+        // F12
+        if (e.key === 'F12' || e.keyCode === 123) { 
+            e.preventDefault(); 
+            return false; 
+        }
+        // Ctrl+Shift+I / J / C (Inspeccionar, Consola, Inspector de Elementos)
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) { 
+            e.preventDefault(); 
+            return false; 
+        }
+        // Ctrl+U (Ver código fuente)
+        if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) { 
+            e.preventDefault(); 
+            return false; 
+        }
+
+        // Ctrl+C (Copiar) excepto si es permitido
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
+            const selection = window.getSelection();
+            let isCopyable = false;
+            if (selection.rangeCount > 0) {
+                const node = selection.focusNode;
+                if (node && node.parentElement && node.parentElement.classList.contains('copyable-code')) {
+                    isCopyable = true;
+                }
+            }
+            if (!isCopyable && e.target.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+            }
+        }
+    });
+
+    // Detección de DevTools (trampa del depurador para disuadir la inspección)
+    (function() {
+        setInterval(function() {
+            const before = new Date().getTime();
+            // Esta instrucción pausa la ejecución si las herramientas de desarrollador están abiertas
+            debugger;
+            const after = new Date().getTime();
+            // Si la pausa duró más de un tiempo razonable, asumimos que DevTools está abierto
+            if (after - before > 100) {
+                // Acción disuasoria: mostrar una pantalla en blanco y vaciar el body
+                document.body.innerHTML = '';
+                document.body.style.display = 'none';
+            }
+        }, 1000);
+    })();
 
   </script>
 
