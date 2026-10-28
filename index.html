@@ -21,6 +21,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* Forzar transparencia real del lienzo del iframe (color-scheme: normal evita que Chromium pinte un Canvas oscuro opaco) */
+    :root, html, body {
+        color-scheme: normal !important;
+        background: rgba(0, 0, 0, 0) !important;
+        background-color: transparent !important;
+    }
+
     @keyframes pulse-slow {
       0%, 100% { opacity: 1; }
       50% { opacity: .5; }
@@ -222,6 +229,22 @@
     #top-btn-smilies, #top-btn-pawns {
         border-radius: 9px;
         font-weight: 600;
+        height: 22px;
+        line-height: 1;
+        padding-top: 0;
+        padding-bottom: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+    #top-normal-content > div:first-child {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
     }
     #top-btn-smilies.bg-blue-600 {
         background: linear-gradient(180deg, #f6d65a, #d8a81f);
@@ -262,8 +285,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 24px;
-        height: 24px;
+        width: 18px;
+        height: 18px;
         border-radius: 7px;
         background: linear-gradient(180deg, var(--btn-navy-top), var(--btn-navy-bot));
         border: 1px solid var(--btn-navy-line);
@@ -278,6 +301,11 @@
 
     /* --- Ocultar/Mostrar (secundario -> dorado al activarse) --- */
     #top-btn-toggle {
+        height: 22px;
+        line-height: 1;
+        padding-top: 0;
+        padding-bottom: 0;
+        box-sizing: border-box;
         border-radius: 8px;
         font-weight: 600;
         background: var(--btn-slate-bg);
@@ -299,6 +327,11 @@
 
     /* --- Idioma y Apariencia (chips navy) --- */
     #top-btn-lang, #top-btn-appearance {
+        height: 22px;
+        line-height: 1;
+        padding-top: 0;
+        padding-bottom: 0;
+        box-sizing: border-box;
         border-radius: 8px;
         font-weight: 600;
         background: linear-gradient(180deg, var(--btn-navy-top), var(--btn-navy-bot));
@@ -319,6 +352,11 @@
 
     /* --- Chips de resultados del buscador --- */
     #search-results-container > button {
+        height: 22px;
+        line-height: 1;
+        padding-top: 0;
+        padding-bottom: 0;
+        box-sizing: border-box;
         border-radius: 8px;
         background: linear-gradient(180deg, var(--btn-navy-top), var(--btn-navy-bot));
         border: 1px solid var(--btn-navy-line);
@@ -349,6 +387,10 @@
        SUPERFICIES GLASS (la opacidad se controla con --g)
        ===================================================================== */
     header .bg-slate-900\/80 {
+        height: 22px;
+        padding-top: 0;
+        padding-bottom: 0;
+        box-sizing: border-box;
         background: linear-gradient(180deg, rgba(var(--hd-top), calc(0.92 * var(--g))), rgba(var(--hd-bot), calc(0.92 * var(--g))));
         border-color: var(--pnl-line);
         box-shadow: var(--shadow-bar);
@@ -358,9 +400,18 @@
     #page-indicator {
         font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
         color: var(--txt-soft);
+        line-height: 1;
     }
 
+    header > div.ml-auto {
+        height: 22px;
+    }
     #top-search {
+        height: 22px;
+        padding-top: 0;
+        padding-bottom: 0;
+        line-height: 1;
+        box-sizing: border-box;
         font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
         background: linear-gradient(180deg, rgba(var(--hd-top), calc(0.95 * var(--g))), rgba(var(--hd-bot), calc(0.95 * var(--g))));
         border-color: var(--pnl-line);
@@ -530,7 +581,7 @@
        está abierto (clase .ap-hide, la gestiona el JS del panel).
        ===================================================================== */
     #appearance-panel {
-        height: 30px;
+        height: 22px;
         box-sizing: border-box;
         align-items: center;
         gap: 10px;
@@ -545,13 +596,13 @@
     #appearance-panel:not(.hidden) { display: flex; }
     html[data-theme="light"] #appearance-panel { box-shadow: 0 10px 16px -10px rgba(40, 50, 140, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.8); }
     #appearance-panel .ap-seg {
-        display: flex; gap: 2px; padding: 2px; height: 24px; box-sizing: border-box;
+        display: flex; gap: 2px; padding: 1px; height: 18px; box-sizing: border-box;
         border-radius: 9px; border: 1px solid var(--pnl-line); background: rgba(0, 0, 0, 0.18);
     }
     html[data-theme="light"] #appearance-panel .ap-seg { background: rgba(60, 72, 170, 0.08); }
     #appearance-panel .ap-opt {
         display: flex; align-items: center; justify-content: center; gap: 5px;
-        height: 18px; padding: 0 9px; border-radius: 7px; border: 1px solid transparent;
+        height: 14px; padding: 0 9px; border-radius: 7px; border: 1px solid transparent;
         font-family: inherit; font-size: 11px; line-height: 1; font-weight: 600; color: var(--txt-muted); cursor: pointer;
         background: transparent; transition: all .2s ease;
     }
@@ -749,7 +800,7 @@
                                                     <img id="t-img" alt="Main Power" class="sprite-image hidden">
                                                 </div>
                                             </div>
-                                            <img src="https://xat.com/content/web/R00243/img/navbar/new.svg" alt="New icon" class="h-10 w-10 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]">
+                                            <img src="https://raw.githubusercontent.com/eamxat/Images/cbdc25a3781998d3c1a442304a77968cc264ad4f/Newicon.svg" alt="New icon" class="h-16 w-16 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]">
                                         </div>
                                     </td>
                                 </tr>
