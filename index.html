@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bg-video="off">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,11 +21,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Forzar transparencia real del lienzo del iframe (color-scheme: normal evita que Chromium pinte un Canvas oscuro opaco) */
+    /* Fondo sólido oscuro con video de fondo (sin transparencia en el lienzo) */
     :root, html, body {
         color-scheme: normal !important;
+        background: #08082e !important;
+        background-color: #08082e !important;
+    }
+    html[data-bg-video="off"],
+    html[data-bg-video="off"] body {
         background: rgba(0, 0, 0, 0) !important;
         background-color: transparent !important;
+    }
+    html[data-bg-video="off"] #bg-video {
+        opacity: 0 !important;
+        visibility: hidden !important;
     }
 
     @keyframes pulse-slow {
@@ -209,7 +218,7 @@
     /* =====================================================================
        BOTONES
        ===================================================================== */
-    #top-btn-smilies, #top-btn-pawns, #top-btn-toggle, #top-btn-lang, #top-btn-appearance,
+    #top-btn-smilies, #top-btn-pawns, #top-btn-toggle, #top-btn-lang, #top-btn-appearance, #top-btn-video,
     header button[onclick^="window.prevPage"],
     header button[onclick^="window.nextPage"],
     #search-results-container > button {
@@ -218,7 +227,7 @@
         cursor: pointer;
         transition: transform .15s ease, filter .15s ease, box-shadow .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
     }
-    #top-btn-smilies:active, #top-btn-pawns:active, #top-btn-toggle:active, #top-btn-lang:active, #top-btn-appearance:active,
+    #top-btn-smilies:active, #top-btn-pawns:active, #top-btn-toggle:active, #top-btn-lang:active, #top-btn-appearance:active, #top-btn-video:active,
     header button[onclick^="window.prevPage"]:active,
     header button[onclick^="window.nextPage"]:active,
     #search-results-container > button:active {
@@ -348,6 +357,32 @@
         border-color: var(--btn-blue-line);
         color: #fff;
         box-shadow: 0 0 14px rgba(70, 110, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    }
+
+    /* --- Icono Halloween (Toggle Video WebM) --- */
+    #top-btn-video {
+        height: 22px;
+        width: 22px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    #top-btn-video img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+        transition: filter .2s ease, transform .15s ease;
+    }
+    #top-btn-video:hover img {
+        filter: drop-shadow(0 0 6px rgba(255, 140, 20, 0.75));
+    }
+    #top-btn-video[aria-pressed="true"] img {
+        filter: drop-shadow(0 0 8px rgba(255, 140, 20, 0.95));
     }
 
     /* --- Chips de resultados del buscador --- */
@@ -678,10 +713,16 @@
     }
   </style>
 </head>
-<body class="bg-transparent text-slate-200 h-screen w-screen overflow-hidden font-sans antialiased selection:bg-blue-500/30 select-none flex justify-center m-0 p-0">
+<body class="bg-[#08082e] text-slate-200 h-screen w-screen overflow-hidden font-sans antialiased selection:bg-blue-500/30 select-none flex justify-center m-0 p-0 relative">
+
+  <!-- VIDEO DE FONDO EN LOOP INFINITO -->
+  <video id="bg-video" src="https://raw.githubusercontent.com/eamxat/Images/main/halloweenvideo.webm" preload="auto" loop muted playsinline class="fixed inset-0 w-full h-full object-cover pointer-events-none z-0">
+    <source src="https://raw.githubusercontent.com/eamxat/Images/main/halloweenvideo.webm" type="video/webm">
+    <source src="https://cdn.jsdelivr.net/gh/eamxat/Images@main/halloweenvideo.webm" type="video/webm">
+  </video>
 
   <!-- CONTENEDOR MAESTRO ABSOLUTO PIXEL-PERFECT (1303px de área total interactiva) -->
-  <div class="relative w-[1303px] h-[608px]">
+  <div class="relative w-[1303px] h-[608px] z-10">
 
     <!-- CONTROLADOR SUPERIOR (ÚNICA ZONA INTERACTIVA - pt-[62px] por banner xat; top-[14px] = barra bajada de 65px a 79px) -->
     <header class="absolute top-[14px] left-0 w-[1303px] h-[91px] pt-[62px] flex items-center justify-between px-6 pointer-events-auto z-50">
@@ -747,6 +788,11 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Icono Halloween (Activar/Desactivar Video de Fondo) -->
+            <button onclick="window.toggleBgVideo()" id="top-btn-video" aria-pressed="false" title="Activar/Desactivar video de fondo" class="-ml-4 shrink-0">
+                <img src="https://raw.githubusercontent.com/eamxat/Images/b9f65628e454c8b8969f48de46773e042dceed88/halloween%20icon.svg" alt="Halloween Video">
+            </button>
         </div>
 
         <!-- CONTENIDO BUSCADOR HORIZONTAL (Oculto por defecto, visible al tipear) -->
@@ -1542,6 +1588,22 @@
         try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
         window.setTheme(saved && saved.theme === 'light' ? 'light' : 'dark');
         window.setGlass(saved && saved.glass ? saved.glass : 100);
+
+        window.bgVideoEnabled = false;
+        window.toggleBgVideo = function () {
+            window.bgVideoEnabled = !window.bgVideoEnabled;
+            const vid = document.getElementById('bg-video');
+            const vBtn = document.getElementById('top-btn-video');
+            if (window.bgVideoEnabled) {
+                root.removeAttribute('data-bg-video');
+                if (vid) vid.play().catch(function(){});
+                if (vBtn) vBtn.setAttribute('aria-pressed', 'true');
+            } else {
+                root.setAttribute('data-bg-video', 'off');
+                if (vid) vid.pause();
+                if (vBtn) vBtn.setAttribute('aria-pressed', 'false');
+            }
+        };
     })();
   </script>
 </body>
