@@ -362,7 +362,7 @@
     /* --- Icono Halloween (Toggle Video WebM) --- */
     #top-btn-video {
         height: 22px;
-        width: 22px;
+        width: 34px;
         padding: 0;
         background: transparent;
         border: none;
@@ -371,10 +371,12 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        overflow: visible;
     }
     #top-btn-video img {
-        width: 22px;
-        height: 22px;
+        width: 34px;
+        height: 34px;
+        max-width: none;
         object-fit: contain;
         transition: filter .2s ease, transform .15s ease;
     }
@@ -716,9 +718,9 @@
 <body class="bg-[#08082e] text-slate-200 h-screen w-screen overflow-hidden font-sans antialiased selection:bg-blue-500/30 select-none flex justify-center m-0 p-0 relative">
 
   <!-- VIDEO DE FONDO EN LOOP INFINITO -->
-  <video id="bg-video" src="https://raw.githubusercontent.com/eamxat/Images/main/halloweenvideo.webm" preload="auto" loop muted playsinline class="fixed inset-0 w-full h-full object-cover pointer-events-none z-0">
-    <source src="https://raw.githubusercontent.com/eamxat/Images/main/halloweenvideo.webm" type="video/webm">
-    <source src="https://cdn.jsdelivr.net/gh/eamxat/Images@main/halloweenvideo.webm" type="video/webm">
+  <video id="bg-video" src="https://raw.githubusercontent.com/eamxat/Images/main/2.webm" preload="auto" loop muted playsinline class="fixed inset-0 w-full h-full object-cover pointer-events-none z-0">
+    <source src="https://raw.githubusercontent.com/eamxat/Images/main/2.webm" type="video/webm">
+    <source src="https://cdn.jsdelivr.net/gh/eamxat/Images@main/2.webm" type="video/webm">
   </video>
 
   <!-- CONTENEDOR MAESTRO ABSOLUTO PIXEL-PERFECT (1303px de área total interactiva) -->
@@ -791,7 +793,7 @@
 
             <!-- Icono Halloween (Activar/Desactivar Video de Fondo) -->
             <button onclick="window.toggleBgVideo()" id="top-btn-video" aria-pressed="false" title="Activar/Desactivar video de fondo" class="-ml-4 shrink-0">
-                <img src="https://raw.githubusercontent.com/eamxat/Images/b9f65628e454c8b8969f48de46773e042dceed88/halloween%20icon.svg" alt="Halloween Video">
+                <img src="https://raw.githubusercontent.com/eamxat/Images/refs/heads/main/a_(dibread)_40.webp" alt="Halloween Video">
             </button>
         </div>
 
