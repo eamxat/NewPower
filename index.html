@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bg-video="off">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,11 +21,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Forzar transparencia real del lienzo del iframe (color-scheme: normal evita que Chromium pinte un Canvas oscuro opaco) */
+    /* Fondo sólido oscuro con video de fondo (sin transparencia en el lienzo) */
     :root, html, body {
         color-scheme: normal !important;
+        background: #08082e !important;
+        background-color: #08082e !important;
+    }
+    html[data-bg-video="off"],
+    html[data-bg-video="off"] body {
         background: rgba(0, 0, 0, 0) !important;
         background-color: transparent !important;
+    }
+    html[data-bg-video="off"] #bg-video,
+    html[data-bg-video="off"] #bg-video-overlay {
+        opacity: 0 !important;
+        visibility: hidden !important;
     }
 
     @keyframes pulse-slow {
@@ -34,6 +44,135 @@
     }
     .animate-pulse-slow {
       animation: pulse-slow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes new-sparkle-top {
+      0%, 60%, 100% {
+        opacity: 0;
+        transform: scale(0.2) rotate(0deg);
+        filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+      }
+      70% {
+        opacity: 1;
+        transform: scale(1.1) rotate(25deg);
+        filter: drop-shadow(0 0 8px rgba(255, 250, 210, 0.95)) brightness(1.3);
+      }
+      76% {
+        opacity: 0.55;
+        transform: scale(0.75) rotate(40deg);
+        filter: drop-shadow(0 0 4px rgba(255, 240, 180, 0.6));
+      }
+      82% {
+        opacity: 0.95;
+        transform: scale(1) rotate(55deg);
+        filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.9)) brightness(1.2);
+      }
+      92% {
+        opacity: 0;
+        transform: scale(0.25) rotate(80deg);
+        filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+      }
+    }
+    @keyframes new-sparkle-bottom {
+      0%, 20%, 100% {
+        opacity: 0;
+        transform: scale(0.2) rotate(0deg);
+        filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+      }
+      30% {
+        opacity: 0.95;
+        transform: scale(1.05) rotate(-25deg);
+        filter: drop-shadow(0 0 8px rgba(255, 250, 210, 0.9)) brightness(1.25);
+      }
+      36% {
+        opacity: 0.45;
+        transform: scale(0.7) rotate(-40deg);
+        filter: drop-shadow(0 0 3px rgba(255, 240, 180, 0.5));
+      }
+      42% {
+        opacity: 0.85;
+        transform: scale(0.95) rotate(-55deg);
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.85)) brightness(1.15);
+      }
+      52% {
+        opacity: 0;
+        transform: scale(0.2) rotate(-75deg);
+        filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+      }
+    }
+    .animate-new-sparkle-top {
+      animation: new-sparkle-top 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    .animate-new-sparkle-bottom {
+      animation: new-sparkle-bottom 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    /* Efecto de brillo de cristal recién pulido sobre el icono New */
+    @keyframes new-crystal-polish {
+      0%, 22%, 52%, 62%, 92%, 100% {
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.1)) brightness(1) contrast(1);
+      }
+      30%, 40% {
+        filter: drop-shadow(0 0 9px rgba(255, 248, 200, 0.25)) brightness(1.07) contrast(1.02);
+      }
+      70%, 80% {
+        filter: drop-shadow(0 0 10px rgba(255, 252, 220, 0.30)) brightness(1.09) contrast(1.03);
+      }
+    }
+    @keyframes new-glass-sheen {
+      0%, 20% {
+        background-position: 180% 180%;
+        opacity: 0;
+      }
+      25% {
+        opacity: 0.45;
+      }
+      44% {
+        background-position: -60% -60%;
+        opacity: 0;
+      }
+      60% {
+        background-position: 180% 180%;
+        opacity: 0;
+      }
+      65% {
+        opacity: 0.55;
+      }
+      85% {
+        background-position: -60% -60%;
+        opacity: 0;
+      }
+      100% {
+        background-position: -60% -60%;
+        opacity: 0;
+      }
+    }
+    .new-crystal-icon {
+      animation: new-crystal-polish 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    .new-crystal-sheen {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        125deg,
+        rgba(255, 255, 255, 0) 35%,
+        rgba(255, 255, 255, 0.12) 45%,
+        rgba(255, 255, 255, 0.55) 50%,
+        rgba(255, 255, 255, 0.12) 55%,
+        rgba(255, 255, 255, 0) 65%
+      );
+      background-size: 240% 240%;
+      -webkit-mask-image: url('https://raw.githubusercontent.com/eamxat/Images/cbdc25a3781998d3c1a442304a77968cc264ad4f/Newicon.svg');
+      mask-image: url('https://raw.githubusercontent.com/eamxat/Images/cbdc25a3781998d3c1a442304a77968cc264ad4f/Newicon.svg');
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-position: center;
+      mix-blend-mode: overlay;
+      animation: new-glass-sheen 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
     /* Contenedor estricto para el sprite */
@@ -209,7 +348,7 @@
     /* =====================================================================
        BOTONES
        ===================================================================== */
-    #top-btn-smilies, #top-btn-pawns, #top-btn-toggle, #top-btn-lang, #top-btn-appearance,
+    #top-btn-smilies, #top-btn-pawns, #top-btn-toggle, #top-btn-lang, #top-btn-appearance, #top-btn-video,
     header button[onclick^="window.prevPage"],
     header button[onclick^="window.nextPage"],
     #search-results-container > button {
@@ -218,7 +357,7 @@
         cursor: pointer;
         transition: transform .15s ease, filter .15s ease, box-shadow .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
     }
-    #top-btn-smilies:active, #top-btn-pawns:active, #top-btn-toggle:active, #top-btn-lang:active, #top-btn-appearance:active,
+    #top-btn-smilies:active, #top-btn-pawns:active, #top-btn-toggle:active, #top-btn-lang:active, #top-btn-appearance:active, #top-btn-video:active,
     header button[onclick^="window.prevPage"]:active,
     header button[onclick^="window.nextPage"]:active,
     #search-results-container > button:active {
@@ -348,6 +487,34 @@
         border-color: var(--btn-blue-line);
         color: #fff;
         box-shadow: 0 0 14px rgba(70, 110, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    }
+
+    /* --- Icono Planeta (Toggle Video WebM) --- */
+    #top-btn-video {
+        height: 22px;
+        width: 24px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        overflow: visible;
+    }
+    #top-btn-video img {
+        width: 22px;
+        height: 22px;
+        max-width: none;
+        object-fit: contain;
+        transition: filter .2s ease, transform .15s ease;
+    }
+    #top-btn-video:hover img {
+        filter: drop-shadow(0 0 6px rgba(45, 82, 196, 0.8));
+    }
+    #top-btn-video[aria-pressed="true"] img {
+        filter: drop-shadow(0 0 8px rgba(65, 110, 235, 0.95));
     }
 
     /* --- Chips de resultados del buscador --- */
@@ -519,6 +686,13 @@
         border-color: var(--btn-navy-line);
         color: var(--txt-input);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+        pointer-events: auto;
+        cursor: pointer;
+    }
+    #smileys-grid > div,
+    #pawns-grid > div {
+        pointer-events: auto;
+        cursor: pointer;
     }
     #smileys-grid > div:hover .copyable-code,
     #pawns-grid > div:hover .copyable-code {
@@ -678,10 +852,18 @@
     }
   </style>
 </head>
-<body class="bg-transparent text-slate-200 h-screen w-screen overflow-hidden font-sans antialiased selection:bg-blue-500/30 select-none flex justify-center m-0 p-0">
+<body class="bg-[#08082e] text-slate-200 h-screen w-screen overflow-hidden font-sans antialiased selection:bg-blue-500/30 select-none flex justify-center m-0 p-0 relative">
+
+  <!-- VIDEO DE FONDO EN LOOP INFINITO -->
+  <video id="bg-video" src="https://raw.githubusercontent.com/eamxat/Images/main/xatvideo.webm" preload="auto" loop muted playsinline class="fixed inset-0 w-full h-full object-cover pointer-events-none z-0">
+    <source src="https://raw.githubusercontent.com/eamxat/Images/main/xatvideo.webm" type="video/webm">
+    <source src="https://cdn.jsdelivr.net/gh/eamxat/Images@main/xatvideo.webm" type="video/webm">
+  </video>
+  <!-- GRADIENT SUTIL AZUL OSCURO SOBRE EL VIDEO PARA REDUCIR EL BRILLO -->
+  <div id="bg-video-overlay" class="fixed inset-0 w-full h-full pointer-events-none z-[1]" style="background: linear-gradient(180deg, rgba(8, 12, 46, 0.45) 0%, rgba(12, 18, 68, 0.55) 100%);"></div>
 
   <!-- CONTENEDOR MAESTRO ABSOLUTO PIXEL-PERFECT (1303px de área total interactiva) -->
-  <div class="relative w-[1303px] h-[608px]">
+  <div class="relative w-[1303px] h-[608px] z-10">
 
     <!-- CONTROLADOR SUPERIOR (ÚNICA ZONA INTERACTIVA - pt-[62px] por banner xat; top-[14px] = barra bajada de 65px a 79px) -->
     <header class="absolute top-[14px] left-0 w-[1303px] h-[91px] pt-[62px] flex items-center justify-between px-6 pointer-events-auto z-50">
@@ -747,6 +929,11 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Icono Planeta (Activar/Desactivar Video de Fondo) -->
+            <button onclick="window.toggleBgVideo()" id="top-btn-video" aria-pressed="false" title="Activar/Desactivar video de fondo" class="-ml-4 shrink-0">
+                <img src="https://raw.githubusercontent.com/eamxat/Images/58b02c3c849b18523cb211bbb267f21ed42475f1/Planeta.svg" alt="Planeta Video">
+            </button>
         </div>
 
         <!-- CONTENIDO BUSCADOR HORIZONTAL (Oculto por defecto, visible al tipear) -->
@@ -800,7 +987,12 @@
                                                     <img id="t-img" alt="Main Power" class="sprite-image hidden">
                                                 </div>
                                             </div>
-                                            <img src="https://raw.githubusercontent.com/eamxat/Images/cbdc25a3781998d3c1a442304a77968cc264ad4f/Newicon.svg" alt="New icon" class="h-16 w-16 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]">
+                                            <div class="relative inline-flex items-center justify-center">
+                                                <img src="https://raw.githubusercontent.com/eamxat/Images/cbdc25a3781998d3c1a442304a77968cc264ad4f/Newicon.svg" alt="New icon" class="h-16 w-16 object-contain new-crystal-icon">
+                                                <span class="new-crystal-sheen"></span>
+                                                <img src="https://raw.githubusercontent.com/eamxat/Images/860f677d5edbde9c4b9d2a08492a76bbb7920334/brillo2.svg" alt="" class="absolute top-1.5 right-0.5 w-6 h-6 object-contain pointer-events-none animate-new-sparkle-top">
+                                                <img src="https://raw.githubusercontent.com/eamxat/Images/860f677d5edbde9c4b9d2a08492a76bbb7920334/brillo2.svg" alt="" class="absolute bottom-1.5 left-0.5 w-5 h-5 object-contain pointer-events-none animate-new-sparkle-bottom">
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -1251,10 +1443,34 @@
         };
 
         const bottomSpan = document.createElement('span');
-        bottomSpan.className = 'copyable-code text-[11px] font-mono font-semibold text-slate-300 bg-slate-900/80 px-2 py-1.5 rounded-lg w-full text-center truncate border border-slate-700 select-none shrink-0 transition-colors group-hover:border-slate-500 group-hover:text-white';
+        bottomSpan.className = 'copyable-code text-[11px] font-mono font-semibold text-slate-300 bg-slate-900/80 px-2 py-1.5 rounded-lg w-full text-center truncate border border-slate-700 select-none shrink-0 transition-colors group-hover:border-slate-500 group-hover:text-white cursor-pointer pointer-events-auto';
         bottomSpan.textContent = bottomText;
         bottomSpan.title = i18n[currentLang].interact_msg; 
         bottomSpan.setAttribute('data-i18n-title', 'interact_msg');
+
+        const copyCardCode = function(e) {
+            e.stopPropagation();
+            if (!window.uiVisible) return;
+            const textarea = document.createElement('textarea');
+            textarea.value = bottomText;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                bottomSpan.textContent = i18n[currentLang].copied;
+                setTimeout(() => {
+                    bottomSpan.textContent = bottomText;
+                }, 1200);
+            } catch (err) {
+                console.error(err);
+            }
+            document.body.removeChild(textarea);
+        };
+
+        bottomSpan.onclick = copyCardCode;
+        card.onclick = copyCardCode;
 
         imgContainer.appendChild(img);
         card.appendChild(topSpan);
@@ -1542,6 +1758,22 @@
         try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
         window.setTheme(saved && saved.theme === 'light' ? 'light' : 'dark');
         window.setGlass(saved && saved.glass ? saved.glass : 100);
+
+        window.bgVideoEnabled = false;
+        window.toggleBgVideo = function () {
+            window.bgVideoEnabled = !window.bgVideoEnabled;
+            const vid = document.getElementById('bg-video');
+            const vBtn = document.getElementById('top-btn-video');
+            if (window.bgVideoEnabled) {
+                root.removeAttribute('data-bg-video');
+                if (vid) vid.play().catch(function(){});
+                if (vBtn) vBtn.setAttribute('aria-pressed', 'true');
+            } else {
+                root.setAttribute('data-bg-video', 'off');
+                if (vid) vid.pause();
+                if (vBtn) vBtn.setAttribute('aria-pressed', 'false');
+            }
+        };
     })();
   </script>
 </body>
